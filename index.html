@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js نوت</title>
+
+  <style>
+    body {
+      text-align: right;
+      direction: rtl;
+      line-height: 1.7;
+    }
+    main {
+      margin: 1rem .25rem;
+      display: flex;
+      justify-content: center;
+    }
+    ul {
+      padding: 0;
+    }
+    li {
+      margin-bottom: .5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .inactive {
+      opacity: 0.4;
+      text-decoration: line-through;
+    }
+    li button {
+      padding: 0 .125rem;
+      line-height: 1;
+    }
+    li label {
+      font-size: 14px;
+    }
+  </style>
+
+  <script src="/alpine.min.js" async defer></script>
+</head>
+<body>
+
+  <main>    
+    <div
+      x-data="{
+        items: [],
+        get checkedItems () {
+          return this.items.filter(i => i.checked);
+        },
+        newItemText: '',
+        add () {
+          if (!this.newItemText) return;
+          this.items.unshift({
+            id: Math.random().toString(32),
+            text: this.newItemText,
+            checked: false
+          });
+          this.newItemText = '';
+        },
+        remove (index) {
+          this.items.splice(index, 1);
+        },
+        check (index) {
+          const item = this.items[index];
+          item.checked = !item.checked;
+          this.items.splice(index, 1, { ...item });
+        },
+      }"
+      x-init="
+        items = JSON.parse(localStorage.items || '[]');
+        $watch('items', value => localStorage.items = JSON.stringify(value));
+      "
+    >
+      <input type="text" placeholder="ایتم جدید..." x-model="newItemText" @keydown.enter="add" autofocus>
+      <button @click="add" :disabled="!newItemText">
+        افزودن
+      </button>
+      <ul>
+        <template x-for="(item, i) in items" :key="item.id">
+          <li>
+            <label :class="{ 'inactive': item.checked }">
+              <input type="checkbox" :checked="item.checked" @change="check(i)">
+              <span x-text="item.text"></span>
+            </label>
+            <button @click="remove(i)">
+              &times;
+            </button>
+          </li>
+        </template>
+      </ul>
+      <hr>
+      <small>
+        همه: <span x-text="items.length"></span>
+        &nbsp;
+        تکمیل: <span x-text="checkedItems.length"></span>
+      </small>
+    </div>
+  </main>
+
+</body>
+</html>
