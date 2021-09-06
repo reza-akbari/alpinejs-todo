@@ -1,2 +1,2 @@
 # alpinejs-todo
-Trying out the alpine.js
+اپ چک لیست صرفا جهت امتحان کردن آلپاین جی اس

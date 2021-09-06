@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alpine.js نوت</title>
+  <title>Alpine.js اپ چک لیست با</title>
 
   <style>
     body {
@@ -27,15 +27,19 @@
       justify-content: space-between;
     }
     .inactive {
-      opacity: 0.4;
+      opacity: 0.5;
       text-decoration: line-through;
+    }
+    input, button {
+      padding: .25rem .5rem;
+      font-size: inherit;
     }
     li button {
       padding: 0 .125rem;
       line-height: 1;
     }
-    li label {
-      font-size: 14px;
+    small {
+      padding: 0 .25rem;
     }
   </style>
 
@@ -54,7 +58,7 @@
         add () {
           if (!this.newItemText) return;
           this.items.unshift({
-            id: Math.random().toString(32),
+            id: Math.random().toString(),
             text: this.newItemText,
             checked: false
           });
@@ -85,16 +89,15 @@
               <input type="checkbox" :checked="item.checked" @change="check(i)">
               <span x-text="item.text"></span>
             </label>
-            <button @click="remove(i)">
-              &times;
-            </button>
+            <button @click="remove(i)"> × </button>
           </li>
         </template>
       </ul>
       <hr>
       <small>
-        همه: <span x-text="items.length"></span>
-        &nbsp;
+        تعداد: <span x-text="items.length"></span>
+      </small>
+      <small>
         تکمیل: <span x-text="checkedItems.length"></span>
       </small>
     </div>
