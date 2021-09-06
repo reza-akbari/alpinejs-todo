@@ -73,10 +73,8 @@
           this.items.splice(index, 1, { ...item });
         },
       }"
-      x-init="
-        items = JSON.parse(localStorage.items || '[]');
-        $watch('items', value => localStorage.items = JSON.stringify(value));
-      "
+      x-init="items = JSON.parse(localStorage.items || '[]')"
+      x-effect="localStorage.items = JSON.stringify(items)"
     >
       <input type="text" placeholder="ایتم جدید..." x-model="newItemText" @keydown.enter="add" autofocus>
       <button @click="add" :disabled="!newItemText">
@@ -86,7 +84,7 @@
         <template x-for="(item, i) in items" :key="item.id">
           <li>
             <label :class="{ 'inactive': item.checked }">
-              <input type="checkbox" :checked="item.checked" @change="check(i)">
+              <input type="checkbox" x-model="item.checked">
               <span x-text="item.text"></span>
             </label>
             <button @click="remove(i)"> × </button>
